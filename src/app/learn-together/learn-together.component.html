@@ -1,0 +1,15 @@
+<app-top-bar-header></app-top-bar-header>
+<li *ngFor="let item of results">
+  <iframe
+    [src]="item.vidoeUrl | safeUrl"
+    width="560"
+    height="315"
+    frameborder="0"
+    webkitallowfullscreen
+    mozallowfullscreen
+    allowfullscreen
+  >
+  </iframe>
+  <p>{{ item.title }}</p>
+</li>
+<app-footer></app-footer>
