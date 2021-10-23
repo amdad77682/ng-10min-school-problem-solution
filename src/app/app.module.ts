@@ -11,6 +11,7 @@ import { TeacherModeSelectionComponent } from './teacher-mode-selection/teacher-
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SafeUrlPipe } from './teacher-mode-selection/safe-url.pipe';
+import { SwitchTeacherService } from './services/switch-teacher.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { SafeUrlPipe } from './teacher-mode-selection/safe-url.pipe';
     HttpClientModule,
   ],
 
-  providers: [],
+  providers: [SwitchTeacherService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

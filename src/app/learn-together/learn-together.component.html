@@ -1,15 +1,76 @@
 <app-top-bar-header></app-top-bar-header>
-<li *ngFor="let item of results">
-  <iframe
-    [src]="item.vidoeUrl | safeUrl"
-    width="560"
-    height="315"
-    frameborder="0"
-    webkitallowfullscreen
-    mozallowfullscreen
-    allowfullscreen
-  >
-  </iframe>
-  <p>{{ item.title }}</p>
-</li>
-<app-footer></app-footer>
+All videos
+<div style="display: flex; flex-direction: row; justify-content: space-between">
+  <div style="height: 500px; overflow-y: scroll">
+    <div
+      style="display: flex; flex: 1; flex-direction: column"
+      *ngFor="let item of results"
+    >
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          border-bottom: dotted 1px;
+        "
+      >
+        <iframe
+          [src]="item.vidoeUrl | safeUrl"
+          width="100"
+          height="60"
+          allowfullscreen=""
+          controls=""
+          autoplay="false"
+          frameborder="0"
+          scrolling="no"
+        >
+        </iframe>
+        <div
+          style="
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            text-align: initial;
+          "
+        >
+          <h4
+            style="
+              width: 300px;
+              white-space: nowrap;
+              overflow: hidden;
+              display: inline-block;
+              text-overflow: ellipsis;
+            "
+          >
+            {{ item.title }}
+          </h4>
+          {{ item.des }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-left: 20px">
+    <iframe
+      [src]="results[0].vidoeUrl | safeUrl"
+      width="600"
+      height="300"
+      frameborder="0"
+      webkitallowfullscreen
+      mozallowfullscreen
+      allowfullscreen
+    >
+    </iframe>
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        margin-bottom: 10px;
+      "
+    >
+      <span style="margin-right: 10px">Teacher Mode</span>
+      <app-teacher-mode-selection></app-teacher-mode-selection>
+    </div>
+  </div>
+</div>
+<!-- <app-footer></app-footer> -->
