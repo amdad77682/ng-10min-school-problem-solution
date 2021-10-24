@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SafeUrlPipe } from './teacher-mode-selection/safe-url.pipe';
 import { SwitchTeacherService } from './services/switch-teacher.service';
-
+// import { PubNubAngularApp } from 'pubnub-angular';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +29,10 @@ import { SwitchTeacherService } from './services/switch-teacher.service';
     HttpClientModule,
   ],
 
-  providers: [SwitchTeacherService],
+  providers: [
+    SwitchTeacherService,
+    // PubNubAngularApp
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

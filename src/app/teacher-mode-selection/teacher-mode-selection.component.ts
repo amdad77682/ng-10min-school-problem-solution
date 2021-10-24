@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SwitchTeacherService, User } from '../services/switch-teacher.service';
 
 @Component({
   selector: 'app-teacher-mode-selection',
@@ -6,8 +7,26 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./teacher-mode-selection.component.css'],
 })
 export class TeacherModeSelectionComponent implements OnInit {
-  @Output() changed = new EventEmitter<boolean>();
-  constructor() {}
+  current_user$: User;
 
-  ngOnInit(): void {}
+  constructor(private userData: SwitchTeacherService) {}
+
+  ngOnInit() {
+    this.current_user$ = this.userData.getUser();
+  }
+  ngOnChanges() {
+    console.log(this.current_user$);
+  }
+  onSwitchMode(event: any) {
+    const other = new User('other');
+    const you = new User('you');
+    this.current_user$ = this.userData.upateUser(
+      event.target.checked ? you : other
+    );
+    console.log(this.current_user$);
+  }
+  isCurrentUserAsu() {
+    const you = new User('you');
+    return this.current_user$ == you ? true : false;
+  }
 }

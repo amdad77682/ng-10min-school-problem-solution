@@ -11,9 +11,12 @@ const other = new User('other');
   providedIn: 'root',
 })
 export class SwitchTeacherService {
-  user = you;
+  user: User = other;
 
   getUser() {
     return (this.user = this.user === you ? you : other);
+  }
+  upateUser(user: User) {
+    return (this.user = user);
   }
 }

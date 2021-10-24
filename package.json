@@ -25,6 +25,8 @@
     "@angular/router": "~12.2.0",
     "@nguniversal/express-engine": "^12.1.2",
     "express": "^4.15.2",
+    "pubnub": "^4.33.1",
+    "pubnub-angular": "^4.2.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
