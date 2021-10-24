@@ -6,7 +6,9 @@ All videos
       style="display: flex; flex: 1; flex-direction: column"
       *ngFor="let item of results"
     >
-      <div
+      <a
+        [title]="item.id + ' room'"
+        [routerLink]="['/app', item.id]"
         style="
           display: flex;
           flex-direction: row;
@@ -46,7 +48,7 @@ All videos
           </h4>
           {{ item.des }}
         </div>
-      </div>
+      </a>
     </div>
   </div>
   <div style="margin-left: 20px">

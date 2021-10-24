@@ -12,7 +12,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SafeUrlPipe } from './teacher-mode-selection/safe-url.pipe';
 import { SwitchTeacherService } from './services/switch-teacher.service';
-// import { PubNubAngularApp } from 'pubnub-angular';
+import { LearnTogetherWithStudentnComponent } from './learn-together-with-studentn/learn-together-with-studentn.component';
+import { JITSI } from './services/jitsi';
+import { PUBNUBService } from './services/pubnub';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,6 +24,7 @@ import { SwitchTeacherService } from './services/switch-teacher.service';
     FooterComponent,
     TeacherModeSelectionComponent,
     SafeUrlPipe,
+    LearnTogetherWithStudentnComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -31,6 +35,8 @@ import { SwitchTeacherService } from './services/switch-teacher.service';
 
   providers: [
     SwitchTeacherService,
+    JITSI,
+    PUBNUBService,
     // PubNubAngularApp
   ],
   bootstrap: [AppComponent],
