@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
+const PUBNUB_PUBLISH_KEY = environment.PUBNUB_PUBLISH_KEY;
+const PUBNUB_SUBSCRIBE_KEY = environment.PUBNUB_SUBSCRIBE_KEY;
 const number = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
 const USER = {
   name: `testuser ${number}`,
@@ -15,8 +18,8 @@ export class PUBNUBService {
 
   init = () => {
     this.pubnub = new (window as any).PubNub({
-      publish_key: 'pub-c-f672051b-8cea-4297-97c2-2bd77f80690d',
-      subscribe_key: 'sub-c-cfe2e1f2-3339-11ec-b886-526a8555c638',
+      publish_key: PUBNUB_PUBLISH_KEY,
+      subscribe_key: PUBNUB_SUBSCRIBE_KEY,
       uuid: USER.name,
       autoNetworkDetection: true, // enable for non-browser environment automatic reconnection
       restore: true, // enable catchup on missed messages

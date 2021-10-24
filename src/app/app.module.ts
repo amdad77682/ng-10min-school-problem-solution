@@ -13,8 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { SafeUrlPipe } from './teacher-mode-selection/safe-url.pipe';
 import { SwitchTeacherService } from './services/switch-teacher.service';
 import { LearnTogetherWithStudentnComponent } from './learn-together-with-studentn/learn-together-with-studentn.component';
-import { JITSI } from './services/jitsi';
-import { PUBNUBService } from './services/pubnub';
+import { PUBNUBService } from './services/pubnub.service';
+import { JITSIService } from './services/jitsi.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +35,7 @@ import { PUBNUBService } from './services/pubnub';
 
   providers: [
     SwitchTeacherService,
-    JITSI,
+    JITSIService,
     PUBNUBService,
     // PubNubAngularApp
   ],

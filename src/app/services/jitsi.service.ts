@@ -10,7 +10,7 @@ const USER = {
 @Injectable({
   providedIn: 'root',
 })
-export class JITSI {
+export class JITSIService {
   connection: any;
   room: any;
   messages = [];

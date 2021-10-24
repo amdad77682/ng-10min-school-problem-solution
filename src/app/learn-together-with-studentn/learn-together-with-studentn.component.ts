@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { JITSI } from '../services/jitsi';
-import { PUBNUBService } from '../services/pubnub';
+import { JITSIService } from '../services/jitsi.service';
+import { PUBNUBService } from '../services/pubnub.service';
 
 @Component({
   selector: 'app-learn-together-with-studentn',
@@ -13,7 +13,7 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
   roomName: string = '';
   constructor(
     private route: ActivatedRoute,
-    private jitsi: JITSI,
+    private jitsi: JITSIService,
     private pubnub: PUBNUBService
   ) {}
 
