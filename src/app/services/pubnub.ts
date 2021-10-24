@@ -24,6 +24,8 @@ export class PUBNUBService {
   };
 
   createRoom = (roomName: string) => {
+    console.log(this.pubnub);
+
     this.pubnub.publish({
       channel: roomName,
       message: {
@@ -55,6 +57,8 @@ export class PUBNUBService {
     roomName: string,
     callback: (status: string, response: any) => void
   ) => {
+    console.log('message', this.pubnub);
+
     this.pubnub.publish(
       {
         message: {

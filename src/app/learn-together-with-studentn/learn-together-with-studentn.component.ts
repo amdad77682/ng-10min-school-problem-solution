@@ -26,14 +26,22 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
     // First get the product id from the current route.
     const routeParams = this.route.snapshot.paramMap;
     this.roomName = routeParams.get('videoId')?.toLowerCase() as string;
+    console.log(this.roomName);
+
     this.pubnub.init();
+    //init
+    this.pubnub.createRoom(this.roomName as string);
+    //room create
     this.pubnub.subscribe(this.roomName as string);
+    //subscribe
     this.pubnub.addmessageListeners(
       this.messageCallback,
       this.presenseCallBack,
       this.statusCallBack
     );
+    //listenner set
     this.messageSend(this.roomName);
+    //message send
   }
   messageSend(roomName: string) {
     this.pubnub.messageSend(
