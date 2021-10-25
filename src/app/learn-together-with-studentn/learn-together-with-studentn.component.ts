@@ -82,27 +82,29 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
       callback: this.messageCallback,
       presence: (event: any) => {
         if (event && event.uuid && event.action) {
-          const userObj: User = {
-            name: event.uuid,
-          };
-          const user = event.uuid == this.username ? 'You' : event.uuid;
-          this.toaster.show(
-            'success',
-            user,
-            `${user} joined to the room`,
-            10000
-          );
-          this.userService.addUser(userObj);
+          if (event.uuid !== this.username) {
+            const userObj: User = {
+              name: event.uuid,
+            };
+            const user = event.uuid == this.username ? 'You' : event.uuid;
+            this.toaster.show(
+              'success',
+              user,
+              `${user} joined to the room`,
+              10000
+            );
+            this.userService.addUser(userObj);
+          }
         }
       },
     });
-    this.messageSend();
+    // this.messageSend();
   };
   gotoTeacherMode = () => {
     this.pubnub.publish(
       {
         message: {
-          mode: 'teacher',
+          mode: this.teacher_mode ? 'student' : 'teacher',
           username: this.username,
           text: `${this.username} ${
             this.teacher_mode
@@ -133,7 +135,8 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
     );
   };
   messageCallback = (message: any) => {
-    this.toaster.show('success', `${message.username}`, message.text, 10000);
+    if (message.username !== this.username)
+      this.toaster.show('success', `${message.username}`, message.text, 10000);
   };
 
   statusCallBack = (event: any) => {
