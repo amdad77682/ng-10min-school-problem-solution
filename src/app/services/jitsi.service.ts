@@ -1,28 +1,19 @@
 import { Injectable } from '@angular/core';
 import { CONFIG } from '../util/config';
 
-const number = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
-const USER = {
-  name: `testuser ${number}`,
-  id: `testuser${number}@jitsi-meet.example.com`,
-  password: `password${number}`,
-};
 @Injectable({
   providedIn: 'root',
 })
 export class JITSIService {
   connection: any;
   room: any;
-  messages = [];
-  constructor() {
-    return this;
-  }
+
   init = (callback: (value: boolean) => void) => {
     (window as any).JitsiMeetJS.init(CONFIG.initOptions);
     this.connection = new (window as any).JitsiMeetJS.JitsiConnection(
       null,
       null,
-      CONFIG.options
+      CONFIG.minimal_options
     );
 
     this.connection.addEventListener(
@@ -34,8 +25,8 @@ export class JITSIService {
     );
     this.connection.addEventListener(
       (window as any).JitsiMeetJS.events.connection.CONNECTION_FAILED,
-      () => {
-        console.log('=====failed');
+      (err: any) => {
+        console.log('=====failed', err);
 
         callback(false);
       }
@@ -47,7 +38,7 @@ export class JITSIService {
         this.disconnect(callback);
       }
     );
-    this.connection.connect(USER);
+    this.connection.connect();
 
     (window as any).JitsiMeetJS.setLogLevel(
       (window as any).JitsiMeetJS.logLevels.ERROR
@@ -97,19 +88,10 @@ export class JITSIService {
       (window as any).JitsiMeetJS.events.conference.USER_LEFT,
       (id: any) => this.onUserLeft(id, onUserLeftCallBack)
     );
-    // this.room.on(
-    //   (window as any).JitsiMeetJS.events.conference.MESSAGE_RECEIVED,
-    //   (user, message) => {
-    //     // eslint-disable-next-line no-console
-    //     console.log('=====message', user, message);
-    //     const messageObj = {
-    //       user: user,
-    //       message: message,
-    //     };
-    //     this.messages = [...this.messages, messageObj];
-    //     messageCallback(this.messages);
-    //   }
-    // );
+    this.room.on(
+      (window as any).JitsiMeetJS.events.conference.MESSAGE_RECEIVED,
+      messageCallback
+    );
   };
 
   onConferenceJoined = () => {

@@ -1,3 +1,26 @@
 <app-top-bar-header></app-top-bar-header>
 
-<p>learn-together-with-studentn works!</p>
+<div class="video-container">
+  <div *ngIf="video">
+    <!-- <video [src]="video.vidoeUrl | safeUrl" poster=""></video> -->
+    <iframe
+      [src]="video.vidoeUrl | safeUrl"
+      width="1000"
+      height="500"
+      allowfullscreen=""
+      controls=""
+      autoplay="false"
+      frameborder="0"
+      scrolling="no"
+    ></iframe>
+  </div>
+  <div class="controls">
+    <!-- play/pause button -->
+    <div class="play"></div>
+    <!-- the seekbar -->
+    <div class="line">
+      <div class="elapsed"></div>
+    </div>
+    <div class="screen"></div>
+  </div>
+</div>

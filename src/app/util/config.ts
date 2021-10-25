@@ -47,6 +47,31 @@ const minimal_options = {
   // The name of client node advertised in XEP-0115 'c' stanza
   clientNode: 'http://jitsi.org/jitsimeet',
 };
+const number = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+const USER = {
+  name: `testuser ${number}`,
+  id: `testuser${number}@jitsi-meet.example.com`,
+  password: `password${number}`,
+};
+function buildOptions(tenant: string, roomName: string) {
+  return {
+    connection: {
+      hosts: {
+        domain: '8x8.vc',
+        muc: `conference.${tenant}.8x8.vc`,
+        focus: 'focus.8x8.vc',
+      },
+      serviceUrl: `wss://8x8.vc/xmpp-websocket?room=${roomName}`,
+      clientNode: 'http://jitsi.org/jitsimeet',
+    },
+    conference: {
+      enableLayerSuspension: true,
+      p2p: {
+        enabled: false,
+      },
+    },
+  };
+}
 const econnect_options = {
   hosts: {
     domain: 'meet.jit.si',
@@ -106,4 +131,6 @@ export const CONFIG = {
   confOptions,
   econnect_options,
   minimal_options,
+  buildOptions,
+  USER,
 };
