@@ -37,3 +37,15 @@
     </a>
   </div>
 </div> -->
+<div
+  *ngIf="users$ | async as users; else usersLoading"
+  style="margin-top: 20px"
+>
+  Room Peoples
+  <div *ngFor="let u of users">
+    <p>{{ u.name }}</p>
+  </div>
+</div>
+<ng-template #usersLoading>
+  <div>Loading...</div>
+</ng-template>

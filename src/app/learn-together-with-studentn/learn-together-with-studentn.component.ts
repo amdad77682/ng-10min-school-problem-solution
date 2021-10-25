@@ -22,7 +22,6 @@ import { VIDEOS } from '../util/videos';
   providers: [UserService],
 })
 export class LearnTogetherWithStudentnComponent implements OnInit {
-  @Input() users$: Observable<User[]>;
   title = 'jitsi';
   roomName: string = '';
   video: Ivideo | undefined;
@@ -34,11 +33,13 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private userService: UserService,
+    public userService: UserService,
     private toaster: ToasterService
   ) {}
 
   ngOnInit() {
+    // console.log(this.userService.getUsers());
+
     // First get the video id from the current route.
     const routeParams = this.route.snapshot.paramMap;
     const id = routeParams.get('videoId');

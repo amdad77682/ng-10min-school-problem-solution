@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/users.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User, UserService } from '../services/users.service';
 
 @Component({
   selector: 'app-joined-students',
@@ -7,9 +8,10 @@ import { UserService } from '../services/users.service';
   styleUrls: ['./joined-students.component.css'],
 })
 export class JoinedStudentsComponent implements OnInit {
-  constructor(public state: UserService) {}
+  @Input() users$: Observable<User[]>;
+  constructor() {}
 
   ngOnInit(): void {
-    console.log('----', this.state.getUsers());
+    console.log('----', this.users$);
   }
 }
