@@ -51,7 +51,7 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
     }
     this.pubnubInit();
   }
-  pubnubInit() {
+  pubnubInit = () => {
     this.pubnub = new (window as any).PUBNUB({
       publish_key: PUBNUB_PUBLISH_KEY,
       subscribe_key: PUBNUB_SUBSCRIBE_KEY,
@@ -85,10 +85,11 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
           const userObj: User = {
             name: event.uuid,
           };
+          const user = event.uuid == this.username ? 'You' : event.uuid;
           this.toaster.show(
             'success',
-            event.uuid,
-            `${event.uuid} joined`,
+            user,
+            `${user} joined to the room`,
             10000
           );
           this.userService.addUser(userObj);
@@ -96,7 +97,7 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
       },
     });
     this.messageSend();
-  }
+  };
   gotoTeacherMode = () => {
     this.pubnub.publish(
       {
@@ -117,7 +118,7 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
     );
     this.teacher_mode = !this.teacher_mode;
   };
-  messageSend() {
+  messageSend = () => {
     this.pubnub.publish(
       {
         message: {
@@ -130,16 +131,9 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
         console.log(status, response);
       }
     );
-  }
+  };
   messageCallback = (message: any) => {
-    // handle message
-    console.log(message);
-    this.toaster.show(
-      'success',
-      `Message From ${message.username}`,
-      message.text,
-      10000
-    );
+    this.toaster.show('success', `${message.username}`, message.text, 10000);
   };
 
   statusCallBack = (event: any) => {
@@ -152,9 +146,9 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
       this.allhereNow(event.affectedChannels);
     }
   };
-  allhereNow(channels: any) {
+  allhereNow = (channels: any) => {
     this.pubnub.hereNow(channels, (status: any, response: any) => {
       console.log(status, response);
     });
-  }
+  };
 }
