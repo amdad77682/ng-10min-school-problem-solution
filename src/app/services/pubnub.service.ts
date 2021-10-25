@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-const PUBNUB_PUBLISH_KEY = environment.PUBNUB_PUBLISH_KEY;
-const PUBNUB_SUBSCRIBE_KEY = environment.PUBNUB_SUBSCRIBE_KEY;
+export const PUBNUB_PUBLISH_KEY = environment.PUBNUB_PUBLISH_KEY;
+export const PUBNUB_SUBSCRIBE_KEY = environment.PUBNUB_SUBSCRIBE_KEY;
 const number = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
-const USER = {
+export const USER = {
   name: `testuser ${number}`,
   id: `testuser${number}@jitsi-meet.example.com`,
   password: `password${number}`,
@@ -27,8 +27,6 @@ export class PUBNUBService {
   };
 
   createRoom = (roomName: string) => {
-    console.log(this.pubnub);
-
     this.pubnub.publish({
       channel: roomName,
       message: {
@@ -60,8 +58,6 @@ export class PUBNUBService {
     roomName: string,
     callback: (status: string, response: any) => void
   ) => {
-    console.log('message', this.pubnub);
-
     this.pubnub.publish(
       {
         message: {
@@ -79,6 +75,8 @@ export class PUBNUBService {
     presenseCallBack: (event: any) => void,
     statusCallBack: (event: any) => void
   ) => {
+    console.log('this.pubnub', this.pubnub);
+
     this.pubnub.addListener({
       message: messageCallBack,
       presence: presenseCallBack,

@@ -1,8 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { JITSIService } from '../services/jitsi.service';
-import { PUBNUBService } from '../services/pubnub.service';
+import {
+  PUBNUBService,
+  PUBNUB_PUBLISH_KEY,
+  PUBNUB_SUBSCRIBE_KEY,
+  USER,
+} from '../services/pubnub.service';
+import { ToasterService } from '../services/toaster.service';
+import { User, UserService } from '../services/users.service';
 import { CONFIG } from '../util/config';
 import { Ivideo } from '../util/video.model';
 import { VIDEOS } from '../util/videos';
@@ -11,81 +19,116 @@ import { VIDEOS } from '../util/videos';
   selector: 'app-learn-together-with-studentn',
   templateUrl: './learn-together-with-studentn.component.html',
   styleUrls: ['./learn-together-with-studentn.component.css'],
-  providers: [JITSIService, PUBNUBService],
+  providers: [UserService],
 })
 export class LearnTogetherWithStudentnComponent implements OnInit {
+  @Input() users$: Observable<User[]>;
   title = 'jitsi';
   roomName: string = '';
   video: Ivideo | undefined;
   safeUrl: SafeResourceUrl = '';
-  pubnub: any = new PUBNUBService();
+  pubnub: any;
+  username = CONFIG.USER.name;
   jitsi: any = new JITSIService();
-  constructor(private route: ActivatedRoute) {}
+
+  constructor(
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private toaster: ToasterService
+  ) {}
 
   ngOnInit() {
+    console.log('----');
+
     // First get the video id from the current route.
     const routeParams = this.route.snapshot.paramMap;
     const id = routeParams.get('videoId');
     this.roomName = id?.toLowerCase() as string;
     this.video = VIDEOS.find((video) => video.id === id);
 
-    if (!(window as any).PubNub) {
+    if (!(window as any).PUBNUB) {
       console.log('scrript not loaded');
       return;
     }
-
-    console.log(this.jitsi);
     this.pubnubInit();
-    this.conferenceInit();
+    // this.conferenceInit();
   }
   pubnubInit() {
-    this.pubnub.init();
-    //init
-    this.pubnub.createRoom(this.roomName as string);
-    //room create
-    this.pubnub.subscribe(this.roomName as string);
-    //subscribe
-    this.pubnub.addmessageListeners(
-      this.messageCallback,
-      this.presenseCallBack,
-      this.statusCallBack
-    );
-    //listenner set
-    this.messageSend(this.roomName);
-  }
-  conferenceInit() {
-    this.jitsi.init((connected: boolean) => {
-      console.log('connected', connected);
+    this.pubnub = new (window as any).PUBNUB({
+      publish_key: PUBNUB_PUBLISH_KEY,
+      subscribe_key: PUBNUB_SUBSCRIBE_KEY,
+      uuid: this.username,
+      autoNetworkDetection: true, // enable for non-browser environment automatic reconnection
+      restore: true, // enable catchup on missed messages
     });
+    //init
+
+    this.pubnub.publish({
+      channel: this.roomName,
+      message: {
+        text: 'Hello,hoomans!',
+      },
+      withPresence: true,
+      callback: function (m: any) {
+        console.log(m);
+      }, //successcallback
+      error: function (e: any) {
+        console.log(e);
+      }, //errorcallback
+    });
+    //room create
+
+    this.pubnub.subscribe({
+      channel: this.roomName,
+      withPresence: true,
+      callback: this.messageCallback,
+      presence: (event: any) => {
+        console.log(
+          '[PRESENCE: ' + event.action + ']',
+          'uuid: ' + event.uuid + ', channel: ' + event.channel
+        );
+        if (event && event.uuid && event.action) {
+          const userObj: User = {
+            name: event.uuid,
+          };
+          this.toaster.show(
+            'success',
+            event.uuid,
+            `${event.uuid} joined`,
+            100000000
+          );
+          this.userService.addUser(userObj);
+        }
+      },
+    });
+    this.messageSend();
   }
-  messageSend(roomName: string) {
-    this.pubnub.messageSend(
-      roomName as string,
+  messageSend() {
+    this.pubnub.publish(
+      {
+        message: {
+          username: this.username,
+          text: 'hello from' + this.username,
+        },
+        channel: this.roomName,
+      },
       (status: string, response: any) => {
         console.log(status, response);
       }
     );
   }
-  messageCallback(message: any) {
+  messageCallback = (message: any) => {
     // handle message
-    const channelName = message.channel;
-    const channelGroup = message.subscription;
-    const publishTimetoken = message.timetoken;
-    const msg = message.message;
-    const publisher = message.publisher;
-    console.log('message', message);
-    //show time
-    const unixTimestamp = message.timetoken / 10000000;
-    const gmtDate = new Date(unixTimestamp * 1000);
-    const localeDateTime = gmtDate.toLocaleString();
-  }
-  presenseCallBack(event: any) {
-    console.log(
-      '[PRESENCE: ' + event.action + ']',
-      'uuid: ' + event.uuid + ', channel: ' + event.channel
+    console.log(message);
+    this.toaster.show(
+      'success',
+      'Well done!',
+      'This is a success alert',
+      10000
     );
-  }
-  statusCallBack(event: any) {
+  };
+
+  statusCallBack = (event: any) => {
     console.log(
       '[STATUS: ' + event.category + ']',
       'connected to channels: ' + event.affectedChannels
@@ -94,7 +137,7 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
     if (event.category === 'PNConnectedCategory') {
       this.allhereNow(event.affectedChannels);
     }
-  }
+  };
   allhereNow(channels: any) {
     this.pubnub.hereNow(channels, (status: any, response: any) => {
       console.log(status, response);

@@ -15,6 +15,12 @@ import { SwitchTeacherService } from './services/switch-teacher.service';
 import { LearnTogetherWithStudentnComponent } from './learn-together-with-studentn/learn-together-with-studentn.component';
 import { PUBNUBService } from './services/pubnub.service';
 import { JITSIService } from './services/jitsi.service';
+import { JoinedStudentsComponent } from './joined-students/joined-students.component';
+import { UserService } from './services/users.service';
+import { UserApiService } from './services/user.api.service';
+import { ToasterComponent } from './toaster/toaster.component';
+import { ToasterService } from './services/toaster.service';
+import { ToasterContainerComponent } from './toaster/toaster.container.comonemt';
 
 @NgModule({
   declarations: [
@@ -25,6 +31,9 @@ import { JITSIService } from './services/jitsi.service';
     TeacherModeSelectionComponent,
     SafeUrlPipe,
     LearnTogetherWithStudentnComponent,
+    JoinedStudentsComponent,
+    ToasterComponent,
+    ToasterContainerComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -37,7 +46,9 @@ import { JITSIService } from './services/jitsi.service';
     SwitchTeacherService,
     JITSIService,
     PUBNUBService,
-    // PubNubAngularApp
+    UserService,
+    UserApiService,
+    ToasterService,
   ],
   bootstrap: [AppComponent],
 })
