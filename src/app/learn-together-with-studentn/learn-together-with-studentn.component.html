@@ -10,7 +10,10 @@
     "
   >
     <span style="margin-right: 10px">Teacher Mode</span>
-    <app-teacher-mode-selection></app-teacher-mode-selection>
+    <app-teacher-mode-selection
+      [teacher_mode]="teacher_mode"
+      [gotoTeacherMode]="gotoTeacherMode"
+    ></app-teacher-mode-selection>
   </div>
 </div>
 <div class="video-container">

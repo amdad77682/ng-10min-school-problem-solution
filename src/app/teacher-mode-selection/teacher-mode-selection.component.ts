@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SwitchTeacherService, User } from '../services/switch-teacher.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { SwitchTeacherService, User } from '../services/switch-teacher.service';
   styleUrls: ['./teacher-mode-selection.component.css'],
 })
 export class TeacherModeSelectionComponent implements OnInit {
+  @Input() teacher_mode: boolean;
+  @Input() gotoTeacherMode: any;
+
   current_user$: User;
 
   constructor(private userData: SwitchTeacherService) {}
@@ -24,6 +27,7 @@ export class TeacherModeSelectionComponent implements OnInit {
       event.target.checked ? you : other
     );
     console.log(this.current_user$);
+    this.gotoTeacherMode();
   }
   isCurrentUserAsu() {
     const you = new User('you');

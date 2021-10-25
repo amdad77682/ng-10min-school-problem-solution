@@ -30,6 +30,7 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
   pubnub: any;
   username = CONFIG.USER.name;
   jitsi: any = new JITSIService();
+  teacher_mode: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -96,6 +97,26 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
     });
     this.messageSend();
   }
+  gotoTeacherMode = () => {
+    this.pubnub.publish(
+      {
+        message: {
+          mode: 'teacher',
+          username: this.username,
+          text: `${this.username} ${
+            this.teacher_mode
+              ? 'going for student mode'
+              : ' going for teacher mode'
+          }`,
+        },
+        channel: this.roomName,
+      },
+      (status: string, response: any) => {
+        console.log(status, response);
+      }
+    );
+    this.teacher_mode = !this.teacher_mode;
+  };
   messageSend() {
     this.pubnub.publish(
       {
