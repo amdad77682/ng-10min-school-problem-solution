@@ -3,15 +3,8 @@ import { Toast, ToasterService } from '../services/toaster.service';
 
 @Component({
   selector: 'app-toaster-container',
-  template: `
-    <app-toaster
-      *ngFor="let toast of toasts; let i = index"
-      [toast]="toast"
-      [i]="i"
-      (remove)="remove($event)"
-    ></app-toaster>
-  `,
-  styles: [],
+  templateUrl: './toaster.container.component.html',
+  styleUrls: ['./toaster.container.component.css'],
 })
 export class ToasterContainerComponent implements OnInit {
   toasts: Toast[] = [];

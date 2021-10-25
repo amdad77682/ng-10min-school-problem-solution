@@ -10,7 +10,7 @@ import { Toast } from '../services/toaster.service';
       <a class="close" (click)="remove.emit(i)">&times;</a>
     </div>
   `,
-  styles: [],
+  styleUrls: ['./toaster.container.component.css'],
 })
 export class ToasterComponent {
   @Input() toast: Toast;

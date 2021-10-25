@@ -38,8 +38,6 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('----');
-
     // First get the video id from the current route.
     const routeParams = this.route.snapshot.paramMap;
     const id = routeParams.get('videoId');
@@ -51,7 +49,6 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
       return;
     }
     this.pubnubInit();
-    // this.conferenceInit();
   }
   pubnubInit() {
     this.pubnub = new (window as any).PUBNUB({
@@ -61,12 +58,12 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
       autoNetworkDetection: true, // enable for non-browser environment automatic reconnection
       restore: true, // enable catchup on missed messages
     });
-    //init
 
     this.pubnub.publish({
       channel: this.roomName,
       message: {
-        text: 'Hello,hoomans!',
+        username: this.username,
+        text: 'I am joinnig the room',
       },
       withPresence: true,
       callback: function (m: any) {
@@ -83,10 +80,6 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
       withPresence: true,
       callback: this.messageCallback,
       presence: (event: any) => {
-        console.log(
-          '[PRESENCE: ' + event.action + ']',
-          'uuid: ' + event.uuid + ', channel: ' + event.channel
-        );
         if (event && event.uuid && event.action) {
           const userObj: User = {
             name: event.uuid,
@@ -95,7 +88,7 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
             'success',
             event.uuid,
             `${event.uuid} joined`,
-            100000000
+            10000
           );
           this.userService.addUser(userObj);
         }
@@ -122,8 +115,8 @@ export class LearnTogetherWithStudentnComponent implements OnInit {
     console.log(message);
     this.toaster.show(
       'success',
-      'Well done!',
-      'This is a success alert',
+      `Message From ${message.username}`,
+      message.text,
       10000
     );
   };
