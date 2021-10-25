@@ -13,7 +13,11 @@ import { Ivideo } from '../util/video.model';
 export class LearnTogetherComponent implements OnInit {
   results: Ivideo[] = VIDEOS;
   safeUrl: SafeResourceUrl = '';
+  preview: Ivideo = VIDEOS[0];
   constructor(private http: HttpClient) {}
 
   ngOnInit() {}
+  onClickVideo = (video: Ivideo) => {
+    this.preview = video;
+  };
 }

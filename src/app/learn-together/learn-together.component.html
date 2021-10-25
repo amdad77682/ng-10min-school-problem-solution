@@ -8,15 +8,18 @@ All videos
     >
       <a
         [title]="item.id + ' room'"
-        [routerLink]="['/app', item.id]"
+        (click)="onClickVideo(item)"
         style="
           display: flex;
           flex-direction: row;
           align-items: center;
           border-bottom: dotted 1px;
         "
+        [ngStyle]="{
+          'background-color': item.id == preview.id ? '#D1D5DB' : '#ffffff'
+        }"
       >
-        <iframe
+        <!-- <iframe
           [src]="item.vidoeUrl | safeUrl"
           width="100"
           height="60"
@@ -26,7 +29,9 @@ All videos
           frameborder="0"
           scrolling="no"
         >
-        </iframe>
+      </iframe> -->
+        <img width="100" height="60" [src]="item.thumbnail" id="thumb" />
+
         <div
           style="
             margin-left: 10px;
@@ -46,14 +51,14 @@ All videos
           >
             {{ item.title }}
           </h4>
-          {{ item.des }}
+          <span style="font-size: small">{{ item.des }}</span>
         </div>
       </a>
     </div>
   </div>
   <div style="margin-left: 20px">
     <iframe
-      [src]="results[0].vidoeUrl | safeUrl"
+      [src]="preview.vidoeUrl | safeUrl"
       width="600"
       height="300"
       frameborder="0"
@@ -70,8 +75,28 @@ All videos
         margin-bottom: 10px;
       "
     >
-      <span style="margin-right: 10px">Teacher Mode</span>
-      <app-teacher-mode-selection></app-teacher-mode-selection>
+      <a [routerLink]="['/app', preview.id]">
+        <button
+          style="
+            background-color: #4caf50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            -webkit-transition-duration: 0.4s; /* Safari */
+            transition-duration: 0.4s;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
+              0 6px 20px 0 rgba(0, 0, 0, 0.19);
+          "
+        >
+          Learn Together
+        </button>
+      </a>
     </div>
   </div>
 </div>

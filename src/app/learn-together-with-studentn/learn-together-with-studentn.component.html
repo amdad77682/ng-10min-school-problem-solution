@@ -1,5 +1,15 @@
 <app-top-bar-header></app-top-bar-header>
-
+<div
+  style="
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-bottom: 10px;
+  "
+>
+  <span style="margin-right: 10px">Teacher Mode</span>
+  <app-teacher-mode-selection></app-teacher-mode-selection>
+</div>
 <div class="video-container">
   <div *ngIf="video">
     <!-- <video [src]="video.vidoeUrl | safeUrl" poster=""></video> -->

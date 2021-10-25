@@ -3,4 +3,5 @@ export interface Ivideo {
   des: string;
   vidoeUrl: string;
   id: string;
+  thumbnail: string;
 }
